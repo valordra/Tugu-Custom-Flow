@@ -1,0 +1,51 @@
+<template>
+    <lightning-layout>
+        <lightning-layout-item flexibility="auto" size="4" class="row-box">
+            <div>{agentName}</div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto" size="4" class="row-box">
+            <div>{agentType}</div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto" size="4" class="row-box">
+            <div><a href="#" onclick={handleHrefAssignedCollectionsClick}>{agentWorkload}</a> / {maxAgentWorkload}</div>
+        </lightning-layout-item>
+    </lightning-layout>
+    <template lwc:if={showCollections}>
+        <template lwc:if={collections}>
+            <lightning-layout>
+                <lightning-layout-item flexibility="auto" size="3" class="row-box-no-border">
+                    <!-- empty space -->
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="3" class="row-box">
+                    <div>Collection</div>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="3" class="row-box">
+                    <div>Status</div>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="3" class="row-box">
+                    <div>Time Assigned</div>
+                </lightning-layout-item>
+            </lightning-layout>
+            <template for:each={collections} for:item="collection">
+                <lightning-layout key={collection.Name}>
+                    <lightning-layout-item flexibility="auto" size="3" class="row-box-no-border">
+                        <!-- empty space -->
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" size="3" class="row-box">
+                        <div><a data-collection-id={collection.Id} onclick={navigateToCollection}>{collection.Name}</a></div>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" size="3" class="row-box">
+                        <div>{collection.Status__c}</div>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" size="3" class="row-box">
+                        <template lwc:if={collection.Assigned_at__c}>
+                            <c-collection-agent-list-item-collection-timer
+                                assigned-at={collection.Assigned_at__c}
+                            ></c-collection-agent-list-item-collection-timer>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </template>
+    </template>
+</template>

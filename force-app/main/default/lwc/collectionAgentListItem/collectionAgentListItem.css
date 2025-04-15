@@ -1,0 +1,8 @@
+.row-box {
+    text-align: center;
+    border: 1px solid #d8dde6;
+}
+
+.row-box-no-border {
+    text-align: center;
+}

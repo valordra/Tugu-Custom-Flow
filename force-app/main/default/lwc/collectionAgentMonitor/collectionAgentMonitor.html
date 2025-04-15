@@ -1,0 +1,36 @@
+<template>
+    <lightning-card>
+        <h3 slot="title">
+            <lightning-layout>
+                <lightning-layout-item>
+                    <lightning-icon icon-name="standard:billing" size="medium"></lightning-icon>
+                </lightning-layout-item>
+                <lightning-layout-item padding="horizontal-medium">
+                    Collection Agent Monitor
+                </lightning-layout-item>
+            </lightning-layout>
+        </h3>
+        <div class="table-container">
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item flexibility="auto" size="4" class="column-header">
+                    <b>Agent</b>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="4" class="column-header">
+                    <b>Type</b>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="4" class="column-header">
+                    <b>Workload</b>
+                </lightning-layout-item>
+            </lightning-layout>
+                <template for:each={agentWorkloads} for:item="agentWorkload">
+                    <c-collection-agent-list-item
+                    key={agentWorkload.agentName}
+                    agent-name={agentWorkload.agentName}
+                    agent-type={agentWorkload.agentType}
+                    agent-workload={agentWorkload.agentWorkload}
+                    max-agent-workload={maxAgentWorkload}
+                    ></c-collection-agent-list-item>
+                </template>
+        </div>
+    </lightning-card>
+</template>

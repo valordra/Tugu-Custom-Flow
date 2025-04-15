@@ -1,0 +1,8 @@
+<template>
+    <template lwc:if={isScriptLoaded}>
+        <lightning-button onclick={generateDocument} label="Export DOCX"></lightning-button>
+    </template>
+    <template lwc:if={isDownloadReady}>
+        <a href={downloadURL} download="TestDocument.docx">Download DOCX</a> 
+    </template>
+</template>
