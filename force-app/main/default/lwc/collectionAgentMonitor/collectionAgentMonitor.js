@@ -1,13 +1,5 @@
 import { api, LightningElement, wire } from 'lwc';
 import { refreshApex } from "@salesforce/apex";
-// import {
-//     registerRefreshContainer,
-//     unregisterRefreshContainer,
-//     REFRESH_ERROR,
-//     REFRESH_COMPLETE,
-//     REFRESH_COMPLETE_WITH_ERRORS,
-//     RefreshEvent
-//   } from "lightning/refresh";
 import getCollectionAgentsWithWorkload from '@salesforce/apex/CollectionAgentMonitorController.getCollectionAgentsWithWorkload';
 import {
     subscribe,

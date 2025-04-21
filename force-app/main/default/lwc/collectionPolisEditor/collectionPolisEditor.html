@@ -1,0 +1,29 @@
+<template>
+    <lightning-card>
+        <h3 slot="title">
+            <lightning-layout>
+                <lightning-layout-item>
+                    <lightning-icon icon-name="standard:billing" size="medium"></lightning-icon>
+                </lightning-layout-item>
+                <lightning-layout-item padding="horizontal-medium">
+                    Polis Editor
+                </lightning-layout-item>
+            </lightning-layout>
+        </h3>
+        <lightning-layout>
+            <lightning-layout-item size="10"></lightning-layout-item>
+            <lightning-layout-item size="1" flexibility="auto">
+                <lightning-button variant="brand-outline" label="Remove" onclick={handleDeleteConnections}></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" flexibility="auto" padding="horizontal-medium">
+                <lightning-button variant="brand-outline" label="Add" onclick={handleAddConnections}></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-datatable
+            key-field="Id"
+            data={polisCollectionConnections}
+            columns={columns}
+            onrowselection={handleRowSelection}>
+        </lightning-datatable>
+    </lightning-card>
+</template>

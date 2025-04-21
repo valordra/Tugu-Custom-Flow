@@ -1,0 +1,22 @@
+<template>
+    <lightning-modal-header label="Add Polis to Collection"></lightning-modal-header>
+    <lightning-modal-body>
+        <div>
+            <lightning-record-picker 
+                label="Polis"
+                placeholder="Search Polis..."
+                object-api-name={polisApiName}
+                onchange={handlePolisSelect}
+                lwc:ref="recordPicker"
+                filter={recordPickerFilter}
+            ></lightning-record-picker>
+        </div>
+        <lightning-pill-container
+            items={pillItems}
+            onitemremove={handlePillRemove}
+        ></lightning-pill-container>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Add Polis" onclick={handleAddPolis}></lightning-button>
+    </lightning-modal-footer>
+</template>

@@ -45,7 +45,7 @@ export default class CollectionAgentListItem extends NavigationMixin(LightningEl
     async registerErrorListener() {
         // Invoke onError empApi method
         onError((error) => {
-            console.log('Received erro  r from server: ', JSON.stringify(error));
+            console.log('Received error from server: ', JSON.stringify(error));
             // Error contains the server-side error
         });
     }
