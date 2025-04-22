@@ -7,7 +7,6 @@ import createConnections from '@salesforce/apex/CollectionPolisEditorController.
 
 export default class CollectionPolisEditor extends LightningElement {
     COMPONENT_NAME = 'collectionPolisEditor';
-    // refreshHandlerID;
 
     columns = [
         { label: 'Polis', fieldName: `polisName`},
@@ -32,22 +31,11 @@ export default class CollectionPolisEditor extends LightningElement {
         }
     }
 
-    selectedConnections;
-
-    // async loadData(){
-    //     try {
-    //         this.polisCollectionConnections = await getRelatedPolisFromCollection({ collectionId: this.recordId });
-    //     } catch (error) {
-    //         console.log(error);
-    //         throw new Error(error);
-    //     }
-        
-    // }
+    selectedConnections = new Array();
+    selectedConnectionsSet = new Set(); // Sets will always be empty when console logged, they work as normal though.
 
     async handleDeleteConnections(){
-        let connectionIds = this.selectedConnections.map(connection => connection.Id);
-        console.log(connectionIds);
-        deleteConnections({connectionIds: connectionIds}).then(() => {
+        deleteConnections({connectionIds: this.selectedConnections}).then(() => {
             this.beginRefresh();
         });
     }
@@ -70,44 +58,42 @@ export default class CollectionPolisEditor extends LightningElement {
                 polisName: connection.Related_Polis__r.Name,
                 polisId: connection.Related_Polis__r.Id
             }));
+
             return preparedData;
         }
         return [];
     }
 
     handleRowSelection(event){
-        this.selectedConnections = event.detail.selectedRows;
-        console.log('start');
-        this.selectedConnections.forEach(connection => {
-            console.log(connection.Id);
-        });
-        console.log('end');
+        console.log(event.detail.config.action);
+        switch (event.detail.config.action) {
+            case 'selectAllRows':
+                this.selectedConnectionsSet = this.selectedConnectionsSet.union(new Set(this.polisCollectionConnections.map(connection => connection.Id)));
+                break;
+            case 'rowSelect':
+                this.selectedConnectionsSet.add(event.detail.config.value);
+                break;
+            case 'rowDeselect':
+                this.selectedConnectionsSet.delete(event.detail.config.value);
+                break;
+            case 'deselectAllRows':
+                this.selectedConnectionsSet = this.selectedConnectionsSet.difference(new Set(this.polisCollectionConnections.map(connection => connection.Id)));
+                break;
+            default:
+                break;
+        }
+        this.selectedConnections = Array.from(this.selectedConnectionsSet);
+        console.log(this.selectedConnections);
     }
 
     connectedCallback(){
-        // this.refreshHandlerID = registerRefreshHandler(
-        //     this.template.host,
-        //     this.CollectionPolisEditor.bind(this),
-        // );
-        // this.loadData().then(() => {
-        //     this.prepareData(this.polisCollectionConnections);
-        // });
-        // this.preparedData = this.prepareData();
+        // this.selectedConnections = ["a0YMR0000003SNy2AM", "a0YMR0000003SPZ2A2", "a0YMR0000003SNx2AM"];
+        // console.log(this.selectedConnections)
     }
-
-    // disconnectedCallback() {
-    //     unregisterRefreshHandler(this.refreshHandlerID);
-    // }
 
     async beginRefresh() {
         console.log('Refreshing...');
         await refreshApex(this.rawConnections);
         console.log(this.rawConnections);
-        // this.dispatchEvent(new RefreshEvent());
     }
-    
-    // refreshContainer(refreshPromise) {
-    //     console.log("refreshing");
-    //     return refreshPromise;
-    // }
 }
