@@ -77,4 +77,18 @@ public with sharing class CollectionPolisEditorController {
             throw new AuraHandledException(e.getMessage());
         }
     }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Polis__c> getAllPolis(){
+        try {
+            List<Polis__c> allPolis = [
+                SELECT Id, Name
+                FROM Polis__c
+                WITH USER_MODE
+            ];
+            return allPolis;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
 }

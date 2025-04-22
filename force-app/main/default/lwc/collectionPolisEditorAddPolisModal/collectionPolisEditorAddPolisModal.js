@@ -1,64 +1,68 @@
-import { api } from 'lwc';
+import { api, wire } from 'lwc';
 import LightningModal from 'lightning/modal';
-import getPolis from '@salesforce/apex/CollectionPolisEditorController.getPolis';
-
-const toPolisPill = (polis) => ({
-    name: polis.Id,
-    label: polis.Name,
-    iconName: 'standard:billing',
-    type: 'icon'
-});
+import getAllPolis from '@salesforce/apex/CollectionPolisEditorController.getAllPolis';
 
 export default class CollectionPolisEditorAddPolisModal extends LightningModal {
-    selectedPolisIds = [];
-    selectedPolisRecords;
-    pillItems = [];
-
-    polisApiName = 'Polis__c';
+    COMPONENT_NAME = 'collectionPolisEditorAddPolisModal';
+    selectedPolisIds = new Array();
+    selectedPolisIdsSet = new Set();
 
     @api recordId;
 
-    // Converts a list a IDs to lightning-record-picker filter
-    
-    get recordPickerFilter() {
-        // Convert selectedRecords to a list of IDs
-        let filter = {
-            criteria: [
-                {
-                    fieldPath: 'Id',
-                    operator: 'nin', // "not in" operator
-                    value: this.selectedPolisIds,
-                }
-            ]
+    columns = [
+        { label: 'Polis', fieldName: `Name`},
+    ]
+
+    rawPolisData;
+    polisData;
+
+    @wire(getAllPolis)
+    wiredPolisData(result){
+        this.rawPolisData = result;
+        if (result.data){
+            this.polisData = result.data;
+            this.filteredPolisData = this.polisData;
+        } else if (result.error){
+            console.log(result.error);
+            throw new Error(result.error);
         }
-        return filter;
     }
 
-    // use lwc:ref in HTML for JS to be able to select element
-    clearRecordPickerSelection() {
-        this.refs.recordPicker.clearSelection();
+    filteredPolisData;
+    
+    handleFilterClick(){
+        this.filteredPolisData = this.filterData(this.polisData);
+        this.selectedPolisIds = JSON.parse(JSON.stringify(this.selectedPolisIds)); // workaround to force re-render pre-selected columns
     }
 
-    async loadPolis(){
-        this.selectedPolisRecords = await getPolis({polisIds: this.selectedPolisIds});
-        this.pillItems = this.selectedPolisRecords.map(toPolisPill);
+    filterData(data){
+        let filteredData = data;
+        let nameFilter = this.refs.nameFilter.value.toLowerCase();
+        if (nameFilter){
+            filteredData = filteredData.filter((polis) => polis.Name.toLowerCase().includes(nameFilter));
+        }
+        return filteredData;
     }
 
-    handlePolisSelect(event) {
-        let selectedPolisId = event.detail.recordId;
-        this.selectedPolisIds.push(selectedPolisId);
-        this.loadPolis();
-        this.clearRecordPickerSelection();
-    }
-
-    handlePillRemove(event) {
-        const polisId = event.detail.item.name;
-
-        // Remove `polisId` from `selectedPolisIds`
-        this.selectedPolisIds = this.selectedPolisIds.filter(
-            (polis) => polis !== polisId
-        );
-        this.loadPolis();
+    handleRowSelection(event){
+        switch (event.detail.config.action) {
+            case 'selectAllRows':
+                this.selectedPolisIdsSet = this.selectedPolisIdsSet.union(new Set(this.filteredPolisData.map(polis => polis.Id)));
+                break;
+            case 'rowSelect':
+                this.selectedPolisIdsSet.add(event.detail.config.value);
+                break;
+            case 'rowDeselect':
+                this.selectedPolisIdsSet.delete(event.detail.config.value);
+                break;
+            case 'deselectAllRows':
+                this.selectedPolisIdsSet = this.selectedPolisIdsSet.difference(new Set(this.filteredPolisData.map(polis => polis.Id)));
+                break;
+            default:
+                break;
+        }
+        this.selectedPolisIds = Array.from(this.selectedPolisIdsSet);
+        console.log(this.selectedPolisIds);
     }
 
     handleAddPolis() {
