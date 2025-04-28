@@ -5,14 +5,23 @@
             <lightning-layout-item size="3">
 
             </lightning-layout-item>
-            <lightning-layout-item size="6">
+            <lightning-layout-item size="3">
                 <lightning-input 
                   type="search"
                   label="Name Filter"
                   placeholder="Filter by Name..."
                   lwc:ref="nameFilter"
-                  oncommit={handleFilterClick} 
+                  oncommit={handleNameFilterClick} 
                 ></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="3">
+                <lightning-combobox
+                    name="Date Range Filter"
+                    label="Filter by Date"
+                    value={dateFilterValue}
+                    options={dateFilterOptions} 
+                    onchange={handleDateFilterClick}
+                    ></lightning-combobox>
             </lightning-layout-item>
             <lightning-layout-item size="3" padding="horizontal-medium">
                 <lightning-button variant="brand-outline" label="Filter" onclick={handleFilterClick}></lightning-button>

@@ -82,7 +82,7 @@ public with sharing class CollectionPolisEditorController {
     public static List<Polis__c> getAllPolis(){
         try {
             List<Polis__c> allPolis = [
-                SELECT Id, Name
+                SELECT Id, Name, Days_Overdue__c
                 FROM Polis__c
                 WITH USER_MODE
             ];

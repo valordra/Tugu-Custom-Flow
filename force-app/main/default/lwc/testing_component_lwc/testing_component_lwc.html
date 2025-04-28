@@ -1,0 +1,49 @@
+<template>
+    <!-- <table>
+        <tr>
+            <td style="border: solid 1px; border-collapse: collapse;">Field</td>
+            <td style="border: solid 1px; border-collapse: collapse;">:</td>
+            <td style="border: solid 1px; border-collapse: collapse;">Value</td>
+        </tr>
+        <tr>
+            <td style="border: solid 1px; border-collapse: collapse;">User ID</td>
+            <td style="border: solid 1px; border-collapse: collapse;">:</td>
+            <td style="border: solid 1px; border-collapse: collapse;">{userId}</td>
+        </tr>
+        <tr>
+            <td style="border: solid 1px; border-collapse: collapse;">Record ID</td>
+            <td style="border: solid 1px; border-collapse: collapse;">:</td>
+            <td style="border: solid 1px; border-collapse: collapse;">
+                <template lwc:if={recordId}>{recordId}</template>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: solid 1px; border-collapse: collapse;">Nomor CATA</td>
+            <td style="border: solid 1px; border-collapse: collapse;">:</td>
+            <td style="border: solid 1px; border-collapse: collapse;">
+                <template lwc:if={collectionRecord}>{collectionRecord.fields.Nomor_CATA__c.value}</template>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: solid 1px; border-collapse: collapse;">Tipe Collection</td>
+            <td style="border: solid 1px; border-collapse: collapse;">:</td>
+            <td style="border: solid 1px; border-collapse: collapse;">
+                <template lwc:if={collectionRecord}>
+                    {collectionRecord.fields.Type__c.value}
+                </template> 
+            </td>
+        </tr>
+    </table> -->
+    <lightning-card title="Template Import Polis for Auto Task Creation" icon-name="standard:related_list">
+        <div class="slds-m-around_medium">
+            <lightning-button label="Download Template" title="Export to CSV" onclick={exportToCSV}
+                icon-name="utility:download"
+                class="slds-p-around_xxx-small slds-align_absolute-center"></lightning-button>
+        </div>
+        <div class="slds-m-around_medium slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+            <lightning-input label="" class="slds-p-around_xxx-small" name="file uploader" onchange={handleFilesChange} type="file" single></lightning-input>
+            <div class="slds-p-around_xxx-small">{fileName}</div>
+        </div>
+        <lightning-button class="upload-button slds-p-around_xxx-small slds-align_absolute-center" label={UploadFile} onclick={handleSave} variant=”brand” disabled={isTrue}></lightning-button>
+    </lightning-card>
+</template>

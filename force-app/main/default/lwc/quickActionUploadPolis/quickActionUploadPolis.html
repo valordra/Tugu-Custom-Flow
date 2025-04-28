@@ -1,0 +1,15 @@
+<template>
+    <lightning-card title="Upload polis CSV/XLSX">
+        <lightning-layout horizontal-align="center">
+            <lightning-layout-item>
+                <!-- <lightning-input label="Upload CSV/XLSX with Polis Ids" type="file" 
+                accept="text/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+                onchange={handleFileUpload}></lightning-input> -->
+                <lightning-file-upload 
+                label="Upload CSV/XLSX" accept={acceptedFormats}
+                onuploadfinished={handleFileUpload}>
+                </lightning-file-upload>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>

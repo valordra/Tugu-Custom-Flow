@@ -3,11 +3,6 @@
     <apiVersion>63.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
-        <target>lightning__RecordAction</target>
+        <target>lightning__AppPage</target>
     </targets>
-    <targetConfigs>
-        <targetConfig targets="lightning__RecordAction">
-            <actionType>Action</actionType>
-        </targetConfig>
-    </targetConfigs>
 </LightningComponentBundle>
